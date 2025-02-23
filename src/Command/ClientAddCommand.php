@@ -60,7 +60,6 @@ class ClientAddCommand extends Command
             return Command::FAILURE;
         }
 
-        // Demande de l'email
         $email = $helper->ask($input, $output, new Question('Email du client : '));
         $violations = $this->validator->validate($email, [
             new Assert\NotBlank(),

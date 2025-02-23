@@ -17,7 +17,6 @@ class UserController extends AbstractController
     #[Route('/user', name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository): Response
     {
-        // $this->denyAccessUnlessGranted('ROLE_ADMIN'); // 🔒 Seuls les admins peuvent voir cet onglet
 
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
