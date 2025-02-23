@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des Produits
+{% endblock %}
+
+{% block body %}
+	<h1>Gestion des Produits</h1>
+
+
+	{% if is_granted('PRODUCT_ADD') %}
+		<a href="{{ path('app_product_new') }}" class="btn btn-success">Ajouter un produit</a>
+		<a href="{{ path('app_user_index') }}" class="btn btn-primary">Voir les utilisateurs</a>
+	{% endif %}
+	<a href="{{ path('app_client_index') }}" class="btn btn-info">Voir les clients</a>
+	<a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
+	<a href="{{ path('app_product_download_csv') }}" class="btn btn-success">Télécharger CSV</a>
+
+	<table class="table table-striped mt-3">
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Desciption</th>
+				<th>Price
+					<a href="{{ path('app_product', { sort: sortOrder == 'ASC' ? 'DESC' : 'ASC' }) }}">
+						{% if sortOrder == 'ASC' %}
+							🔽
+						{% else %}
+							🔼
+						{% endif %}
+					</a>
+				</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for product in products %}
+				<tr>
+					<td>{{ product.name }}</td>
+					<td>{{ product.description }}</td>
+					<td>{{ product.price }}
+						€</td>
+					<td>
+						{# <a href="{{ path('app_product_view', { 'id': product.id }) }}" class="btn btn-info btn-sm">Voir</a> #}
+
+						{% if is_granted('PRODUCT_EDIT', product) %}
+							<a href="{{ path('app_product_edit', { 'id': product.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+						{% endif %}
+
+						{% if is_granted('PRODUCT_DELETE', product) %}
+							<form method="post" action="{{ path('app_product_delete', { 'id': product.id }) }}" onsubmit="return confirm('Êtes-vous sûr ?');" style="display:inline;">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ product.id) }}">
+								<button class="btn btn-danger btn-sm">Supprimer</button>
+							</form>
+						{% endif %}
+
+					</td>
+				</tr>
+			{% endfor %}
+
+		</tbody>
+	</table>
+{% endblock %}
+

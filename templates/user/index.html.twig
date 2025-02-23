@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des utilisateurs
+{% endblock %}
+
+{% block body %}
+	<h1>Gestion des utilisateurs</h1>
+
+    {% if is_granted('create') %}
+	<a href="{{ path('app_user_new') }}" class="btn btn-success">Ajouter un utilisateur</a>
+    {% endif %}
+	<a href="{{ path('app_product') }}" class="btn btn-primary">Voir les produits</a>
+	<a href="{{ path('app_client_index') }}" class="btn btn-info">Voir les clients</a>
+	<a href="{{ path('app_logout') }}" class="btn btn-danger">Se déconnecter</a>
+
+	<table class="table table-striped mt-3">
+		<thead>
+			<tr>
+				<th>Email</th>
+				<th>Nom</th>
+				<th>Prénom</th>
+				<th>Rôles</th>
+				<th>Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for user in users %}
+				<tr>
+					<td>{{ user.email }}</td>
+					<td>{{ user.lastname }}</td>
+					<td>{{ user.firstname }}</td>
+					<td>{{ user.roles|join(', ') }}</td>
+					<td>
+						{% if is_granted('edit', user) %}
+							<a href="{{ path('app_user_edit', { id: user.id }) }}" class="btn btn-warning btn-sm">Modifier</a>
+						{% endif %}
+
+						{% if is_granted('delete', user) %}
+							<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" onsubmit="return confirm('Confirmer la suppression ?');">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+								<button class="btn btn-danger btn-sm">Supprimer</button>
+							</form>
+						{% endif %}
+					</td>
+				</tr>
+			{% endfor %}
+		</tbody>
+	</table>
+{% endblock %}
+

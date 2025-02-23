@@ -1,28 +1,44 @@
+# Ignore les fichiers de cache et de logs
+/var/cache/
+/var/log/
 
-###> symfony/framework-bundle ###
-/.env.local
-/.env.local.php
-/.env.*.local
-/config/secrets/prod/prod.decrypt.private.php
-/public/bundles/
-/var/
-/vendor/
-###< symfony/framework-bundle ###
+# Ignore les fichiers d'environnement sensibles
+.env
+.env.local
+.env.*.local
+.env.test
+/.env
 
-###> phpunit/phpunit ###
-/phpunit.xml
+# Ignore les secrets Symfony (clé de chiffrement)
+config/secrets/*/local.*
+config/secrets/prod/prod.decrypt.private.php
+
+# Ignore les fichiers de Composer
+/composer.phar
+
+# Ignore les fichiers de build
+/public/build/
+/node_modules/
+
+# Ignore les fichiers d'IDE (VSCode, PHPStorm, etc.)
+.idea/
+.vscode/
+
+# Ignore le fichier de débogage
+/phpunit.xml.dist
+
+# Ignore le fichier .DS_Store sur macOS
+.DS_Store
+
+# Ignore le fichier de déploiement
+/deploy/
+
+# Ignore le fichier de rapport de PHPUnit
 .phpunit.result.cache
-###< phpunit/phpunit ###
 
-###> symfony/phpunit-bridge ###
-.phpunit.result.cache
-/phpunit.xml
-###< symfony/phpunit-bridge ###
+# Ignore les fichiers générés par Symfony CLI
+.symfony/cache/
+.symfony/log/
 
-###> symfony/asset-mapper ###
-/public/assets/
-/assets/vendor/
-###< symfony/asset-mapper ###
-
-### .idx
-/.idx/.data
+# Ignore les fichiers de coverage PHPUnit
+coverage/
