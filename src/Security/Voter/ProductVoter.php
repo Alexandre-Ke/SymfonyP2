@@ -23,12 +23,10 @@ final class ProductVoter extends Voter
     {
         $user = $token->getUser();
 
-        // Si l'utilisateur n'est pas connecté, on refuse l'accès
         if (!$user instanceof UserInterface) {
             return false;
         }
 
-        // Vérification des permissions en fonction de l'action
         switch ($attribute) {
             case self::ADD:
                 return $this->canADD($user);
@@ -50,13 +48,11 @@ final class ProductVoter extends Voter
 
     private function canEdit(UserInterface $user): bool
     {
-        // Seuls les administrateurs peuvent modifier un produit
         return in_array('ROLE_ADMIN', $user->getRoles(), true);
     }
 
     private function canDelete(UserInterface $user): bool
     {
-        // Seuls les administrateurs peuvent supprimer un produit
         return in_array('ROLE_ADMIN', $user->getRoles(), true);
     }
 }

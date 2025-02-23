@@ -9,6 +9,9 @@
 .env.test
 /.env
 
+#Ignore les fichiers vendors
+/vendor/
+
 # Ignore les secrets Symfony (clé de chiffrement)
 config/secrets/*/local.*
 config/secrets/prod/prod.decrypt.private.php
