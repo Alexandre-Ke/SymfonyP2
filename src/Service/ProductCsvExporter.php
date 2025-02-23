@@ -15,18 +15,13 @@ class ProductCsvExporter
         $this->productRepository = $productRepository;
     }
 
-    /**
-     * Génère un fichier CSV contenant tous les produits.
-     */
     public function exportProductsCsv(): StreamedResponse
     {
         $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
 
-            // Ajouter l'entête du CSV
             fputcsv($handle, ['ID', 'Nom', 'Description', 'Prix (€)'], ';');
 
-            // Récupérer tous les produits
             $products = $this->productRepository->findAll();
 
             foreach ($products as $product) {
@@ -43,7 +38,6 @@ class ProductCsvExporter
             fclose($handle);
         });
 
-        // Configuration des headers pour le téléchargement
         $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
         $response->headers->set('Content-Disposition', 'attachment; filename="products.csv"');
 

@@ -40,7 +40,6 @@ class ProductImportCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        // Récupérer le nom du fichier et vérifier s'il existe
         $filename = $input->getArgument('filename');
         $filePath = 'public/uploads/' . $filename;
 
@@ -49,13 +48,11 @@ class ProductImportCommand extends Command
             return Command::FAILURE;
         }
 
-        // Lecture du fichier CSV
         $io->section("Lecture du fichier CSV : $filename");
         $handle = fopen($filePath, 'r');
 
         $header = fgetcsv($handle, 1000, ';');
 
-        // Vérification de l'en-tête du fichier CSV
         if ($header !== ['name', 'description', 'price']) {
             $io->error("Le fichier CSV doit contenir les colonnes suivantes : name, description, price");
             return Command::FAILURE;
@@ -64,13 +61,11 @@ class ProductImportCommand extends Command
         $productsImported = 0;
         $errors = [];
 
-        // Lecture des lignes du fichier CSV
         while (($data = fgetcsv($handle, 1000, ';')) !== false) {
             $name = $data[0];
             $description = $data[1];
             $price = $data[2];
 
-            // Validation des données
             $violations = $this->validator->validate($price, [
                 new Assert\NotBlank(),
                 new Assert\Positive(),
@@ -81,7 +76,6 @@ class ProductImportCommand extends Command
                 continue;
             }
 
-            // Création du produit
             $product = new Product();
             $product->setName($name)
                 ->setDescription($description)
@@ -95,7 +89,6 @@ class ProductImportCommand extends Command
 
         $this->entityManager->flush();
 
-        // Affichage du résultat
         $io->success("$productsImported produits importés avec succès.");
 
         if (count($errors) > 0) {

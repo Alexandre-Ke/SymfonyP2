@@ -29,7 +29,6 @@ final class UserVoter extends Voter
             return false;
         }
 
-        // Administrateurs ont tous les droits
         if (in_array('ROLE_ADMIN', $user->getRoles())) {
             return true;
         }
